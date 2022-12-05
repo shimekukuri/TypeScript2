@@ -1,13 +1,10 @@
 interface UserProps {
   name?: string;
   age?: number;
+  id?: number;
 }
 
-type Callback = () => void;
-
 export class User {
-  events: { [key: string]: Callback[] } = {};
-
   constructor(private data: UserProps) {}
 
   get(propName: string): string | number {
@@ -18,21 +15,42 @@ export class User {
     Object.assign(this.data, update);
   }
 
-  on(eventName: string, callback: Callback): void {
-    const handlers = this.events[eventName] || [];
-    handlers.push(callback);
-    this.events[eventName] = handlers;
+  ffetch() {
+    fetch(`http://localhost:3000/users/${this.get('id')}`, {
+      method: 'GET',
+      mode: 'cors',
+    })
+      .then((response: Response) => response.json())
+      .then((data): void => this.set(data));
   }
 
-  trigger(eventName: string): void {
-    const handlers = this.events[eventName];
-
-    if (!handlers || handlers.length === 0) {
-      return;
+  save(): void {
+    if (this.get('id')) {
+      //put
+      fetch(`http://localhost:3000/users/${this.get('id')}`, {
+        method: 'PUT',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: this.get('name'), age: this.get('age') }),
+      })
+        .then((response) => response.json())
+        .then(() => console.log('Successfully updated'))
+        .catch((e) => console.log(`error occured`, e));
+    } else {
+      //post
+      fetch(`http://localhost:3000/users/`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: this.get('name'), age: this.get('age') }),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log('Successfully created', data))
+        .catch((e) => console.log(`error occured`, e));
     }
-
-    handlers.forEach((callback) => {
-      callback();
-    });
   }
 }
