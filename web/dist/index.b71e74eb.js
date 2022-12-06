@@ -538,30 +538,21 @@ const user = new (0, _user.User)({
     age: 44,
     id: 2
 });
-user.events.on("change", ()=>{
-    console.log("change event");
-});
-user.events.trigger("change");
+console.log(user);
 
 },{"./models/User":"4rcHn"}],"4rcHn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "User", ()=>User);
 var _eventing = require("./Eventing");
+var _sync = require("./Sync");
+const rootUrl = `http://localhost:3000/users`;
 class User {
-    constructor(data){
-        this.data = data;
-        this.events = new (0, _eventing.Eventing)();
-    }
-    get(propName) {
-        return this.data[propName];
-    }
-    set(update) {
-        Object.assign(this.data, update);
-    }
+    events = new (0, _eventing.Eventing)();
+    sync = new (0, _sync.Sync)(rootUrl);
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1","./Eventing":"7459s"}],"cXUg1":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1","./Eventing":"7459s","./Sync":"QO3Gl"}],"cXUg1":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -608,6 +599,42 @@ class Eventing {
         handlers.forEach((callback)=>{
             callback();
         });
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1"}],"QO3Gl":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Sync", ()=>Sync);
+class Sync {
+    constructor(rootUrl){
+        this.rootUrl = rootUrl;
+    }
+    ffetch(id) {
+        return fetch(`${this.rootUrl}/${id}`, {
+            method: "GET",
+            mode: "cors"
+        }).then((response)=>response.json());
+    }
+    save(data) {
+        if (data.id) //put
+        return fetch(`${this.rootUrl}/${data.id}`, {
+            method: "PUT",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        }).then((response)=>response.json()).catch((e)=>console.log(`error occured`, e));
+        else //post
+        return fetch(`${this.rootUrl}/`, {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        }).then((response)=>response.json()).catch((e)=>console.log(`error occured`, e));
     }
 }
 

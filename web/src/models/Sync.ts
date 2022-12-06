@@ -1,46 +1,48 @@
 import { AxiosResponse } from 'axios';
-import { UserProps } from './User';
+import { User, UserProps } from './User';
 
-export class Sync {
+interface HasId {
+  id?: number;
+}
+
+export class Sync<T extends HasId> {
   rootUrl: string;
 
   constructor(rootUrl: string) {
     this.rootUrl = rootUrl;
   }
 
-  ffetch(id: number): Promise<UserProps> {
+  ffetch(id: number): Promise<T> {
     return fetch(`${this.rootUrl}/${id}`, {
       method: 'GET',
       mode: 'cors',
     }).then((response: Response) => response.json());
   }
 
-  save(data: UserProps): void {
+  save(data: T): Promise<T> {
     if (data.id) {
       //put
-      fetch(`${this.rootUrl}/${data.id}`, {
+      return fetch(`${this.rootUrl}/${data.id}`, {
         method: 'PUT',
         mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name: data.name, age: data.age }),
+        body: JSON.stringify(data),
       })
         .then((response) => response.json())
-        .then(() => console.log('Successfully updated'))
         .catch((e) => console.log(`error occured`, e));
     } else {
       //post
-      fetch(`${this.rootUrl}/`, {
+      return fetch(`${this.rootUrl}/`, {
         method: 'POST',
         mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name: data.name, age: data.age }),
+        body: JSON.stringify(data),
       })
         .then((response) => response.json())
-        .then((data) => console.log('Successfully created', data))
         .catch((e) => console.log(`error occured`, e));
     }
   }
