@@ -538,16 +538,20 @@ const user = new (0, _user.User)({
     age: 44,
     id: 2
 });
-user.save();
-console.log(user);
+user.events.on("change", ()=>{
+    console.log("change event");
+});
+user.events.trigger("change");
 
 },{"./models/User":"4rcHn"}],"4rcHn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "User", ()=>User);
+var _eventing = require("./Eventing");
 class User {
     constructor(data){
         this.data = data;
+        this.events = new (0, _eventing.Eventing)();
     }
     get(propName) {
         return this.data[propName];
@@ -555,41 +559,9 @@ class User {
     set(update) {
         Object.assign(this.data, update);
     }
-    ffetch() {
-        fetch(`http://localhost:3000/users/${this.get("id")}`, {
-            method: "GET",
-            mode: "cors"
-        }).then((response)=>response.json()).then((data)=>this.set(data));
-    }
-    save() {
-        if (this.get("id")) //put
-        fetch(`http://localhost:3000/users/${this.get("id")}`, {
-            method: "PUT",
-            mode: "cors",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                name: this.get("name"),
-                age: this.get("age")
-            })
-        }).then((response)=>response.json()).then(()=>console.log("Successfully updated")).catch((e)=>console.log(`error occured`, e));
-        else //post
-        fetch(`http://localhost:3000/users/`, {
-            method: "POST",
-            mode: "cors",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                name: this.get("name"),
-                age: this.get("age")
-            })
-        }).then((response)=>response.json()).then((data)=>console.log("Successfully created", data)).catch((e)=>console.log(`error occured`, e));
-    }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1"}],"cXUg1":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1","./Eventing":"7459s"}],"cXUg1":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -619,6 +591,26 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}]},["5RpR5","h7u1C"], "h7u1C", "parcelRequire2d1f")
+},{}],"7459s":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Eventing", ()=>Eventing);
+class Eventing {
+    events = {};
+    on(eventName, callback) {
+        const handlers = this.events[eventName] || [];
+        handlers.push(callback);
+        this.events[eventName] = handlers;
+    }
+    trigger(eventName) {
+        const handlers = this.events[eventName];
+        if (!handlers || handlers.length === 0) return;
+        handlers.forEach((callback)=>{
+            callback();
+        });
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1"}]},["5RpR5","h7u1C"], "h7u1C", "parcelRequire2d1f")
 
 //# sourceMappingURL=index.b71e74eb.js.map
