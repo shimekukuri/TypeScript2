@@ -538,7 +538,7 @@ const user = new (0, _user.User)({
     age: 44,
     id: 2
 });
-console.log(user);
+user.on();
 
 },{"./models/User":"4rcHn"}],"4rcHn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -553,6 +553,9 @@ class User {
     sync = new (0, _sync.Sync)(rootUrl);
     constructor(attrs){
         this.attributes = new (0, _attributes.Attributes)(attrs);
+    }
+    get on() {
+        return this.events.on;
     }
 }
 
