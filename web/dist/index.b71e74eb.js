@@ -546,13 +546,17 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "User", ()=>User);
 var _eventing = require("./Eventing");
 var _sync = require("./Sync");
+var _attributes = require("./Attributes");
 const rootUrl = `http://localhost:3000/users`;
 class User {
     events = new (0, _eventing.Eventing)();
     sync = new (0, _sync.Sync)(rootUrl);
+    constructor(attrs){
+        this.attributes = new (0, _attributes.Attributes)(attrs);
+    }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1","./Eventing":"7459s","./Sync":"QO3Gl"}],"cXUg1":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1","./Eventing":"7459s","./Sync":"QO3Gl","./Attributes":"6Bbds"}],"cXUg1":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -635,6 +639,22 @@ class Sync {
             },
             body: JSON.stringify(data)
         }).then((response)=>response.json()).catch((e)=>console.log(`error occured`, e));
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1"}],"6Bbds":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Attributes", ()=>Attributes);
+class Attributes {
+    constructor(data){
+        this.data = data;
+    }
+    get(key) {
+        return this.data[key];
+    }
+    set(update) {
+        Object.assign(this.data, update);
     }
 }
 
