@@ -538,7 +538,10 @@ const user = new (0, _user.User)({
     age: 44,
     id: 2
 });
-user.on();
+user.on("change", ()=>{
+    console.log("User was changed");
+});
+user.trigger("change");
 
 },{"./models/User":"4rcHn"}],"4rcHn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -556,6 +559,12 @@ class User {
     }
     get on() {
         return this.events.on;
+    }
+    get trigger() {
+        return this.events.trigger;
+    }
+    get get() {
+        return this.attributes.get;
     }
 }
 
@@ -595,18 +604,18 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Eventing", ()=>Eventing);
 class Eventing {
     events = {};
-    on(eventName, callback) {
+    on = (eventName, callback)=>{
         const handlers = this.events[eventName] || [];
         handlers.push(callback);
         this.events[eventName] = handlers;
-    }
-    trigger(eventName) {
+    };
+    trigger = (eventName)=>{
         const handlers = this.events[eventName];
         if (!handlers || handlers.length === 0) return;
         handlers.forEach((callback)=>{
             callback();
         });
-    }
+    };
 }
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1"}],"QO3Gl":[function(require,module,exports) {
@@ -652,9 +661,9 @@ parcelHelpers.export(exports, "Attributes", ()=>Attributes);
 class Attributes {
     constructor(data){
         this.data = data;
-    }
-    get(key) {
-        return this.data[key];
+        this.get = (key)=>{
+            return this.data[key];
+        };
     }
     set(update) {
         Object.assign(this.data, update);
