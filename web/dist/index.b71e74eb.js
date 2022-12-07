@@ -541,7 +541,8 @@ const user = new (0, _user.User)({
 user.on("change", ()=>{
     console.log("User was changed");
 });
-user.trigger("change");
+console.log(user.get("name"));
+console.log(user.get);
 
 },{"./models/User":"4rcHn"}],"4rcHn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -566,6 +567,7 @@ class User {
     get get() {
         return this.attributes.get;
     }
+    set(update) {}
 }
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1","./Eventing":"7459s","./Sync":"QO3Gl","./Attributes":"6Bbds"}],"cXUg1":[function(require,module,exports) {
