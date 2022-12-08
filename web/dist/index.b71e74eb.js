@@ -534,15 +534,14 @@ function hmrAcceptRun(bundle, id) {
 },{}],"h7u1C":[function(require,module,exports) {
 var _user = require("./models/User");
 const user = new (0, _user.User)({
-    name: "tyoeo",
-    age: 44,
-    id: 2
+    id: 2,
+    name: "new name",
+    age: 123456
 });
-user.on("change", ()=>{
-    console.log("User was changed");
+user.on("save", ()=>{
+    console.log(user);
 });
-console.log(user.get("name"));
-console.log(user.get);
+user.save();
 
 },{"./models/User":"4rcHn"}],"4rcHn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -567,7 +566,24 @@ class User {
     get get() {
         return this.attributes.get;
     }
-    set(update) {}
+    set(update) {
+        this.attributes.set(update);
+        this.events.trigger("change");
+    }
+    fetch() {
+        const id = this.get("id");
+        if (typeof id !== "number") throw new Error("Cannot fetch without an id");
+        this.sync.fetch(id).then((response)=>{
+            this.set(response);
+        });
+    }
+    save() {
+        this.sync.save(this.attributes.getAll()).then((reponse)=>{
+            this.trigger("save");
+        }).catch(()=>{
+            this.trigger("error");
+        });
+    }
 }
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1","./Eventing":"7459s","./Sync":"QO3Gl","./Attributes":"6Bbds"}],"cXUg1":[function(require,module,exports) {
@@ -628,7 +644,7 @@ class Sync {
     constructor(rootUrl){
         this.rootUrl = rootUrl;
     }
-    ffetch(id) {
+    fetch(id) {
         return fetch(`${this.rootUrl}/${id}`, {
             method: "GET",
             mode: "cors"
@@ -669,6 +685,9 @@ class Attributes {
     }
     set(update) {
         Object.assign(this.data, update);
+    }
+    getAll() {
+        return this.data;
     }
 }
 

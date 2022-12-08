@@ -12,7 +12,7 @@ export class Sync<T extends HasId> {
     this.rootUrl = rootUrl;
   }
 
-  ffetch(id: number): Promise<T> {
+  fetch(id: number): PromiseLike<T> {
     return fetch(`${this.rootUrl}/${id}`, {
       method: 'GET',
       mode: 'cors',
