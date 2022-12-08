@@ -557,33 +557,6 @@ class User {
     constructor(attrs){
         this.attributes = new (0, _attributes.Attributes)(attrs);
     }
-    get on() {
-        return this.events.on;
-    }
-    get trigger() {
-        return this.events.trigger;
-    }
-    get get() {
-        return this.attributes.get;
-    }
-    set(update) {
-        this.attributes.set(update);
-        this.events.trigger("change");
-    }
-    fetch() {
-        const id = this.get("id");
-        if (typeof id !== "number") throw new Error("Cannot fetch without an id");
-        this.sync.fetch(id).then((response)=>{
-            this.set(response);
-        });
-    }
-    save() {
-        this.sync.save(this.attributes.getAll()).then((reponse)=>{
-            this.trigger("save");
-        }).catch(()=>{
-            this.trigger("error");
-        });
-    }
 }
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1","./Eventing":"7459s","./Sync":"QO3Gl","./Attributes":"6Bbds"}],"cXUg1":[function(require,module,exports) {
