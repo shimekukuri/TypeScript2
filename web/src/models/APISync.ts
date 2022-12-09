@@ -5,14 +5,14 @@ interface HasId {
   id?: number;
 }
 
-export class Sync<T extends HasId> {
+export class APISync<T extends HasId> {
   rootUrl: string;
 
   constructor(rootUrl: string) {
     this.rootUrl = rootUrl;
   }
 
-  fetch(id: number): PromiseLike<T> {
+  fetch(id: number): Promise<T> {
     return fetch(`${this.rootUrl}/${id}`, {
       method: 'GET',
       mode: 'cors',

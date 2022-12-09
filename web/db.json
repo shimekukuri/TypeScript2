@@ -1,8 +1,6 @@
 {
   "users": [
     {
-      "name": "myname",
-      "age": 20,
       "id": 1
     },
     {
