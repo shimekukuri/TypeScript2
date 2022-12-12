@@ -569,7 +569,8 @@ class UserForm {
       <div>User Name: ${this.model.get("name")}</div>
       <div> Age: ${this.model.get("age")}</div>
       <input />
-      <Button>Click Me</Button>
+      <button>Click Me</button>
+      <button>Set Random Age</button>
     </div>
     `;
     }
