@@ -553,9 +553,11 @@ class UserForm {
     eventsMap() {
         return {
             "click:button": this.onButtonClick,
-            "mouseenter:h1": this.onHeaderHover
+            "mouseenter:h1": this.onHeaderHover,
+            "click:.set-age": this.randomizeAge
         };
     }
+    randomizeAge() {}
     onHeaderHover() {
         console.log("H1 was hovered over");
     }
@@ -570,7 +572,7 @@ class UserForm {
       <div> Age: ${this.model.get("age")}</div>
       <input />
       <button>Click Me</button>
-      <button>Set Random Age</button>
+      <button class="set-age">Set Random Age</button>
     </div>
     `;
     }
