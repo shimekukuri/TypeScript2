@@ -549,20 +549,30 @@ class UserForm {
     constructor(parent, model){
         this.parent = parent;
         this.model = model;
+        this.randomizeAge = ()=>{
+            this.model.setRandomAge();
+        };
+        this.setName = ()=>{
+            const input = this.parent.querySelector("input");
+            const name = input?.value;
+            this.model.set({
+                name: name
+            });
+        };
+        this.model.on("change", ()=>{
+            this.bindModel();
+        });
+    }
+    bindModel() {
+        this.model.on("change", ()=>{
+            this.render();
+        });
     }
     eventsMap() {
         return {
-            "click:button": this.onButtonClick,
-            "mouseenter:h1": this.onHeaderHover,
+            "click:.set-name": this.setName,
             "click:.set-age": this.randomizeAge
         };
-    }
-    randomizeAge() {}
-    onHeaderHover() {
-        console.log("H1 was hovered over");
-    }
-    onButtonClick() {
-        console.log("Hi there");
     }
     template() {
         return `
@@ -571,7 +581,7 @@ class UserForm {
       <div>User Name: ${this.model.get("name")}</div>
       <div> Age: ${this.model.get("age")}</div>
       <input />
-      <button>Click Me</button>
+      <button class="set-name">Change Name</button>
       <button class="set-age">Set Random Age</button>
     </div>
     `;
@@ -586,6 +596,7 @@ class UserForm {
         }
     }
     render() {
+        this.parent.innerHTML = "";
         const templateElement = document.createElement("template");
         templateElement.innerHTML = this.template();
         this.bindEvents(templateElement.content);
@@ -639,6 +650,12 @@ class User extends (0, _model.Model) {
     }
     static buildUserCollection() {
         return new (0, _collections.Collection)(rootUrl, (json)=>User.buildUser(json));
+    }
+    setRandomAge() {
+        const age = Math.round(Math.random() * 100);
+        this.set({
+            age: age
+        });
     }
 }
 
