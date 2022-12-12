@@ -545,66 +545,37 @@ userForm.render();
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "UserForm", ()=>UserForm);
-class UserForm {
-    constructor(parent, model){
-        this.parent = parent;
-        this.model = model;
-        this.randomizeAge = ()=>{
-            this.model.setRandomAge();
-        };
-        this.setName = ()=>{
-            const input = this.parent.querySelector("input");
-            const name = input?.value;
-            this.model.set({
-                name: name
-            });
-        };
-        this.model.on("change", ()=>{
-            this.bindModel();
-        });
-    }
-    bindModel() {
-        this.model.on("change", ()=>{
-            this.render();
-        });
-    }
+var _views = require("./Views");
+class UserForm extends (0, _views.View) {
     eventsMap() {
         return {
             "click:.set-name": this.setName,
             "click:.set-age": this.randomizeAge
         };
     }
+    randomizeAge = ()=>{
+        this.model.setRandomAge();
+    };
+    setName = ()=>{
+        const input = this.parent.querySelector("input");
+        const name = input?.value;
+        this.model.set({
+            name: name
+        });
+    };
     template() {
         return `
     <div>
-      <h1>User Form</h1>
-      <div>User Name: ${this.model.get("name")}</div>
-      <div> Age: ${this.model.get("age")}</div>
-      <input />
+      <input placeholder="${this.model.get("name")}"/>
       <button class="set-name">Change Name</button>
       <button class="set-age">Set Random Age</button>
+      <button class="save-model"></button>
     </div>
     `;
     }
-    bindEvents(fragment) {
-        const eventsMap = this.eventsMap();
-        for(let eventKey in eventsMap){
-            const [eventName, selector] = eventKey.split(":");
-            fragment.querySelectorAll(selector).forEach((element)=>{
-                element.addEventListener(eventName, eventsMap[eventKey]);
-            });
-        }
-    }
-    render() {
-        this.parent.innerHTML = "";
-        const templateElement = document.createElement("template");
-        templateElement.innerHTML = this.template();
-        this.bindEvents(templateElement.content);
-        this.parent.append(templateElement.content);
-    }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1"}],"cXUg1":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1","./Views":"7IoAg"}],"cXUg1":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -634,7 +605,42 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"4rcHn":[function(require,module,exports) {
+},{}],"7IoAg":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "View", ()=>View);
+class View {
+    constructor(parent, model){
+        this.parent = parent;
+        this.model = model;
+        this.model.on("change", ()=>{
+            this.bindModel();
+        });
+    }
+    bindModel() {
+        this.model.on("change", ()=>{
+            this.render();
+        });
+    }
+    bindEvents(fragment) {
+        const eventsMap = this.eventsMap();
+        for(let eventKey in eventsMap){
+            const [eventName, selector] = eventKey.split(":");
+            fragment.querySelectorAll(selector).forEach((element)=>{
+                element.addEventListener(eventName, eventsMap[eventKey]);
+            });
+        }
+    }
+    render() {
+        this.parent.innerHTML = "";
+        const templateElement = document.createElement("template");
+        templateElement.innerHTML = this.template();
+        this.bindEvents(templateElement.content);
+        this.parent.append(templateElement.content);
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1"}],"4rcHn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "User", ()=>User);
