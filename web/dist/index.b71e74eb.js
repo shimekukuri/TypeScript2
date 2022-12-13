@@ -532,115 +532,20 @@ function hmrAcceptRun(bundle, id) {
 }
 
 },{}],"h7u1C":[function(require,module,exports) {
-var _userForm = require("./views/UserForm");
 var _user = require("./models/User");
+var _userEdit = require("./views/UserEdit");
 const user = (0, _user.User).buildUser({
-    name: "TemplateTest",
-    age: 484
+    name: "domRender",
+    age: 4848
 });
-const userForm = new (0, _userForm.UserForm)(document.getElementById(`root`), user);
-userForm.render();
+const root = document.getElementById("root");
+if (root) {
+    const userEdit = new (0, _userEdit.UserEdit)(root, user);
+    userEdit.render();
+    console.log(userEdit);
+} else throw new Error("Root element not found");
 
-},{"./views/UserForm":"gXSLD","./models/User":"4rcHn"}],"gXSLD":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "UserForm", ()=>UserForm);
-var _views = require("./Views");
-class UserForm extends (0, _views.View) {
-    eventsMap() {
-        return {
-            "click:.set-name": this.setName,
-            "click:.set-age": this.randomizeAge
-        };
-    }
-    randomizeAge = ()=>{
-        this.model.setRandomAge();
-    };
-    setName = ()=>{
-        const input = this.parent.querySelector("input");
-        const name = input?.value;
-        this.model.set({
-            name: name
-        });
-    };
-    template() {
-        return `
-    <div>
-      <input placeholder="${this.model.get("name")}"/>
-      <button class="set-name">Change Name</button>
-      <button class="set-age">Set Random Age</button>
-      <button class="save-model"></button>
-    </div>
-    `;
-    }
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1","./Views":"7IoAg"}],"cXUg1":[function(require,module,exports) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, "__esModule", {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
-
-},{}],"7IoAg":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "View", ()=>View);
-class View {
-    constructor(parent, model){
-        this.parent = parent;
-        this.model = model;
-        this.model.on("change", ()=>{
-            this.bindModel();
-        });
-    }
-    bindModel() {
-        this.model.on("change", ()=>{
-            this.render();
-        });
-    }
-    bindEvents(fragment) {
-        const eventsMap = this.eventsMap();
-        for(let eventKey in eventsMap){
-            const [eventName, selector] = eventKey.split(":");
-            fragment.querySelectorAll(selector).forEach((element)=>{
-                element.addEventListener(eventName, eventsMap[eventKey]);
-            });
-        }
-    }
-    render() {
-        this.parent.innerHTML = "";
-        const templateElement = document.createElement("template");
-        templateElement.innerHTML = this.template();
-        this.bindEvents(templateElement.content);
-        this.parent.append(templateElement.content);
-    }
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1"}],"4rcHn":[function(require,module,exports) {
+},{"./models/User":"4rcHn","./views/UserEdit":"3CihC"}],"4rcHn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "User", ()=>User);
@@ -704,7 +609,37 @@ class Model {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1"}],"6Bbds":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1"}],"cXUg1":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}],"6Bbds":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Attributes", ()=>Attributes);
@@ -810,6 +745,142 @@ class Collection {
     }
 }
 
-},{"./Eventing":"7459s","@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1"}]},["5RpR5","h7u1C"], "h7u1C", "parcelRequire2d1f")
+},{"./Eventing":"7459s","@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1"}],"3CihC":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "UserEdit", ()=>UserEdit);
+var _views = require("./Views");
+var _userForm = require("./UserForm");
+var _userShow = require("./UserShow");
+class UserEdit extends (0, _views.View) {
+    regionsMap() {
+        return {
+            userShows: ".user-show",
+            userForm: ".user-form"
+        };
+    }
+    onRender() {
+        new (0, _userShow.UserShow)(this.regions.userShows, this.model).render();
+        new (0, _userForm.UserForm)(this.regions.userForm, this.model).render();
+    }
+    template() {
+        return `
+    <div>
+      <div class="user-show"></div>
+      <div class="user-form"></div>
+    </div>
+    `;
+    }
+}
+
+},{"./Views":"7IoAg","@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1","./UserShow":"2Tlyi","./UserForm":"gXSLD"}],"7IoAg":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "View", ()=>View);
+class View {
+    constructor(parent, model){
+        this.parent = parent;
+        this.model = model;
+        this.regions = {};
+        this.model.on("change", ()=>{
+            this.bindModel();
+        });
+    }
+    regionsMap() {
+        return {};
+    }
+    eventsMap() {
+        return {};
+    }
+    bindModel() {
+        this.model.on("change", ()=>{
+            this.render();
+        });
+    }
+    bindEvents(fragment) {
+        const eventsMap = this.eventsMap();
+        for(let eventKey in eventsMap){
+            const [eventName, selector] = eventKey.split(":");
+            fragment.querySelectorAll(selector).forEach((element)=>{
+                element.addEventListener(eventName, eventsMap[eventKey]);
+            });
+        }
+    }
+    mapRegions(fragement) {
+        const regionsMap = this.regionsMap();
+        for(let key in regionsMap){
+            let selector = regionsMap[key];
+            const element = fragement.querySelector(selector);
+            if (element) this.regions[key] = element;
+        }
+    }
+    onRender() {}
+    render() {
+        this.parent.innerHTML = "";
+        const templateElement = document.createElement("template");
+        templateElement.innerHTML = this.template();
+        this.bindEvents(templateElement.content);
+        this.mapRegions(templateElement.content);
+        this.onRender();
+        this.parent.append(templateElement.content);
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1"}],"2Tlyi":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "UserShow", ()=>UserShow);
+var _views = require("./Views");
+class UserShow extends (0, _views.View) {
+    template() {
+        return `
+    <div>
+      <h1>User Show</h1>
+      <div>User Name: ${this.model.get("name")}</div>
+      <div>User Age: ${this.model.get("age")}</div>
+    </div>
+    `;
+    }
+}
+
+},{"./Views":"7IoAg","@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1"}],"gXSLD":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "UserForm", ()=>UserForm);
+var _views = require("./Views");
+class UserForm extends (0, _views.View) {
+    eventsMap() {
+        return {
+            "click:.set-name": this.setName,
+            "click:.set-age": this.randomizeAge,
+            "click:.save-model": this.saveModel
+        };
+    }
+    saveModel = ()=>{
+        this.model.save();
+    };
+    randomizeAge = ()=>{
+        this.model.setRandomAge();
+    };
+    setName = ()=>{
+        const input = this.parent.querySelector("input");
+        const name = input?.value;
+        this.model.set({
+            name: name
+        });
+    };
+    template() {
+        return `
+    <div>
+      <input placeholder="${this.model.get("name")}"/>
+      <button class="set-name">Change Name</button>
+      <button class="set-age">Set Random Age</button>
+      <button class="save-model">Save User</button>
+    </div>
+    `;
+    }
+}
+
+},{"./Views":"7IoAg","@parcel/transformer-js/src/esmodule-helpers.js":"cXUg1"}]},["5RpR5","h7u1C"], "h7u1C", "parcelRequire2d1f")
 
 //# sourceMappingURL=index.b71e74eb.js.map
