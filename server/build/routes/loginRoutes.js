@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
+const express_1 = require("express");
 const requireAuth = (req, res, next) => {
     if (req.session && req.session.loggedIn) {
         next();
@@ -11,6 +12,8 @@ const requireAuth = (req, res, next) => {
         res.send('Not permitted');
     }
 };
+const router = (0, express_1.Router)();
+exports.router = router;
 router.post('/login', (req, res) => {
     const { email, password } = req.body;
     if (email && password && email === 'hi@hi.com' && password === 'password') {

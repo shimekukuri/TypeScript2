@@ -14,6 +14,8 @@ const requireAuth = (req: Request, res: Response, next: NextFunction): void => {
   }
 };
 
+const router = Router();
+
 router.post('/login', (req: ReqeustWithBody, res: Response) => {
   const { email, password } = req.body;
   if (email && password && email === 'hi@hi.com' && password === 'password') {
