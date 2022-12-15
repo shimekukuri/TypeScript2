@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const loginRoutes_1 = require("./routes/loginRoutes");
 const body_parser_1 = __importDefault(require("body-parser"));
 const cookie_session_1 = __importDefault(require("cookie-session"));
+require("./controllers/LoginControllers");
 const app = (0, express_1.default)();
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use((0, cookie_session_1.default)({ keys: ['asd;lfkjasf'] }));

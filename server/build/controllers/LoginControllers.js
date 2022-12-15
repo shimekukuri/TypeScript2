@@ -10,8 +10,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const routes_1 = require("./decorators/routes");
-//@controller('/')
-class LoginController {
+const controller_1 = require("../controllers/decorators/controller");
+let LoginController = class LoginController {
     getLogin(req, res) {
         res.send(`
   <form method="POST">
@@ -27,10 +27,13 @@ class LoginController {
   </form>
   `);
     }
-}
+};
 __decorate([
     (0, routes_1.get)('/login'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], LoginController.prototype, "getLogin", null);
+LoginController = __decorate([
+    (0, controller_1.controller)('/auth')
+], LoginController);
