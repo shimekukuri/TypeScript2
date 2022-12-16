@@ -40,7 +40,7 @@ router.get('/', (req: Request, res: Response) => {
     res.send(`
     <div>
       <div>You Are Not Logged In</div>
-      <a href="/login">Login</a>
+      <a href="/auth/login">Login</a>
     </div>
     `);
   }
